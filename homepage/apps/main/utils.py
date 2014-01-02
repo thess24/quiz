@@ -20,7 +20,7 @@ def order_by_score(queryset, score_fields, date_field, reverse=True):
     # Defining these assumes the SQL functions POW() and NOW()
     # are available for the DB backend.
     timestamp_sqls = {
-        "mysql": "UNIX_TIMESTAMP(%s)",
+        "mysql": "UNIX_TIMESTAMP(%s)", 
         "postgresql_psycopg2": "EXTRACT(EPOCH FROM %s)" ,
     }
     db_engine = settings.DATABASES[queryset.db]["ENGINE"].rsplit(".", 1)[1]
@@ -28,7 +28,7 @@ def order_by_score(queryset, score_fields, date_field, reverse=True):
 
     if timestamp_sql:
         score_sql = "(%s) / POW(%s - %s, %s)" % (
-            " + ".join(score_fields),
+            score_fields,
             timestamp_sql % "NOW()",
             timestamp_sql % date_field,
             scale,
