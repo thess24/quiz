@@ -23,7 +23,7 @@ urlpatterns = patterns('',
         {'document_root': MEDIA_ROOT}),
 
 ) 
-
+ 
 
 #### High Importance
 

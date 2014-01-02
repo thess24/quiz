@@ -19,7 +19,6 @@ from django.db.models.base import ObjectDoesNotExist
    # outputs the number of responses for each answer (by id) of ONE question
 
 
-
 def deletequestion(request):
 	questions = Question.objects.filter(user=request.user)
 
