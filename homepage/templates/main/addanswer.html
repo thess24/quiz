@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<style type="text/css">
+
+	body {
+	  color: rgb(120, 120, 120);
+	}
+
+  form{
+    display: inline-block;
+  }
+
+  .maincolor{
+    color:rgb(79, 159, 207)
+  }
+
+</style>
+{% endblock %}
+ 
+
+{% block content %} 
+
+        <div class='row'>
+          <div class='col-md-12'>
+
+<h2>Add an Answer</h2>
+            <hr>
+
+          <div class="alert alert-info alert-dismissable" style='padding-top:10px; padding-bottom:10px'>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            You can only add answers to questions you asked in the last 10 minutes
+          </div>
+
+        {% if ansresponse %}
+          <div class="alert alert-info alert-dismissable" style='padding-top:10px; padding-bottom:10px'>
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            "{{ansresponse}}" was added
+          </div>
+        {% endif %}
+
+            <form method='post' enctype="multipart/form-data">{% csrf_token %}{% load crispy_forms_tags %}
+            {% crispy form %}
+            </form>
+
+          </div>
+        </div>
+
+<div id='id1'></div>
+<div id='id2' style='background-color:green'></div>
+<div></div>
+{% endblock %}
+
+
+
+
+
+
+
+{% block scripts %}
+
+
+{% endblock %}
+
+
+

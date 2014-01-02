@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<style type="text/css">
+
+	body {
+	  color: rgb(120, 120, 120);
+	}
+
+  form{
+    display: inline-block;
+  }
+
+</style>
+{% endblock %}
+ 
+
+{% block content %} 
+
+
+            <h2>Delete A Question</h2>
+            <hr>
+
+{% for q in questions %}
+        <div style='padding:10px'>
+            <form method='post'>{% csrf_token %}
+              {{q.question}} - {{q.time}}
+              <input type='hidden' value='{{q.id}}' name='id'>
+              <button class='btn btn-danger btn-sm' type='submit' name='qdelete'>
+                <span class='glyphicon glyphicon-trash'></span>
+              </button>
+            </form>
+        </div>
+{% endfor %}
+
+
+{% endblock %}
+
+
+
+
+
+{% block scripts %}
+
+
+{% endblock %}
+
+
+

@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<style type="text/css">
+
+	body {
+	  color: rgb(120, 120, 120);
+	}
+
+  form{
+    display: inline-block;
+  }
+
+  .maincolor{
+    color:rgb(79, 159, 207)
+  }
+
+ .itemlink{
+   color:#CF6D00 !important;
+   font-weight:bold;
+ }
+
+</style>
+{% endblock %}
+ 
+
+{% block content %} 
+
+
+{% if user.is_authenticated %}
+        <div class='row'>
+          <div class='col-md-12'>
+
+            <h2>Ask a question? <small>
+              <a href="{% url 'addanswer' %}">
+                <button class='btn btn-sm' style='margin-left:40px'>
+                  <span class='glyphicon glyphicon-plus'></span>
+              Add an Answer</button>
+              </a>
+              <a href="{% url 'deletequestion' %}">
+                <button class='btn btn-sm' style='margin-left:10px'>
+                  <span class='glyphicon glyphicon-trash'></span>
+              Delete Question</button>
+              </a>
+            </small>
+            </h2>
+<hr>   
+            <form method='post' enctype="multipart/form-data">{% csrf_token %}{% load crispy_forms_tags %}
+            {% crispy form %}
+            </form>
+<hr>
+
+            <h4>You have {{userscore}} points</h4>
+            {% for q in questions %}
+            <h4>
+              <a href="{% url 'itempage' q.id %}" class='itemlink'>{{q.points}} - {{q.question}} </a>
+                <small>({{q.time}})</small>
+              
+            </h4>
+            {% endfor %}
+
+          </div>
+        </div>
+
+{% else %}
+
+        <div class='row'>
+          <div class='col-md-12'>
+
+            <h4>Sign up to ask a question!</h4>
+
+<hr>
+  
+          <button class='btn btn-lg'><a href="/accounts/register">Sign Up</a></button>
+
+          </div>
+        </div>
+
+{% endif %}
+{% endblock %}
+
+
+
+{% block scripts %}
+<script type="text/javascript">
+
+$(function(){
+  $('#id_category').popover({'trigger':'focus', 'title': 'Where does it fit?','content':'The question will appear in /c/<category> so choose wisely!',  'placement':'right'});
+  $('#id_description').popover({'trigger':'focus', 'title': 'Description','content':'This is what will show up on the questions page', 'placement':'right'});
+});
+
+</script>
+{% endblock %}
+
+
+

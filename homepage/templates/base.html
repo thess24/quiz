@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %} Orange Triangle {% endblock %}</title>
+    <!-- Bootstrap core CSS -->
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="{{STATIC_URL}}css/drum.css" rel="stylesheet">
+
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+    <!-- Custom styles for this template -->
+		{% block head %}{% endblock %}
+    <style type="text/css">
+          /* Sticky footer styles
+      -------------------------------------------------- */
+      html,
+      body {
+        height: 100%;
+        /* The html and body elements cannot have any padding or margin. */
+      }
+
+      /* Wrapper for page content to push down footer */
+      #wrap {
+        min-height: 100%;
+        height: auto !important;
+        height: 100%;
+        /* Negative indent footer by its height */
+        margin: 0 auto -60px;
+        /* Pad bottom by footer height */
+        padding: 0 0 60px;
+      }
+
+      /* Set the fixed height of the footer here */
+      #footer {
+        height: 60px;
+        background-color: #f5f5f5;
+      }
+      /* Custom page CSS
+      -------------------------------------------------- */
+      /* Not required for template or sticky footer method. */
+
+      .container {
+        width: auto;
+        padding: 0 15px;
+      }
+      .container .credit {
+        margin: 20px 0;
+
+      }
+      
+     .makered{
+      color: red;
+    }
+
+    .lownav{
+      background-color: rgb(242, 242, 242);
+      -webkit-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      border-radius: 5px; 
+      padding-right: 100px;
+      padding-left: 100px;
+      border: 1px solid gray;
+    }
+
+/*    .lownav a{
+      float: right;
+    }*/
+
+    .navbar{
+      border-radius: 0px;
+      margin-bottom: 0px;
+    }
+</style>
+  </head>
+
+  <body>
+
+    <!-- Wrap all page content here -->
+    <div id="wrap">
+
+    <div class="navbar navbar-inverse" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/" style='color:#FF8500'>Orange Triangle</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="{% url 'addquestion'%}">Ask Question</a></li>
+          </ul>
+          {% if user.is_authenticated %}
+          <ul class="nav navbar-nav pull-right">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <span class='glyphicon glyphicon-cog'></span>  {{user.username}} - ({{userscore}})<b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="{% url 'submitted'%}">Submitted</a></li>
+                <li><a href="{% url 'saved'%}">Saved</a></li>
+                <li><a href="{% url 'scoreboard'%}">Scores</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Account</li>
+                <li><a href="/accounts/password/change">Change Password</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/accounts/logout">Logout</a></li>
+              </ul>
+            </li>
+            
+          </ul>
+
+          {% else %}
+          <ul class="nav navbar-nav pull-right">
+            <li class="active"><a href="/accounts/signup">Signup</a></li>
+            <li class="active"><a href="/accounts/login">Sign In</a></li>
+          </ul>
+          {% endif %}
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>
+          <div class='row lownav'>
+            
+            <a href="new">/New</a>
+
+          </div>
+
+      <div class="container">
+		{% block content %}{% endblock %}
+      </div>
+    </div>
+
+    <div id="footer">
+      <div class="container">
+        <!-- <p class="text-muted credit">A Simple Homepage by Taylor Hess</p> -->
+      </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script type="text/javascript" src='//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js'></script>
+<script type="text/javascript" src='//cdnjs.cloudflare.com/ajax/libs/masonry/3.1.1/masonry.pkgd.min.js'></script>
+
+{% block scripts %}{% endblock %}
+  </body>
+</html>

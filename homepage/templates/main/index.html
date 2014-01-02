@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+    <link href="{{STATIC_URL}}css/index.css" rel="stylesheet">
+    <style type="text/css">
+        body {
+          /*color: rgb(120, 120, 120);*/
+          background: url('{{STATIC_URL}}img/bg-tile.jpg');
+        }
+    </style>
+{% endblock %}
+ 
+
+
+{% block content %} 
+          <div id='masonjar' class='endless_page_template'>    
+    {% include page_template %}
+          </div> 
+{% endblock %}
+
+
+
+
+
+{% block scripts %}
+
+{{ block.super }}
+
+<script type="text/javascript" src='//cdn.jsdelivr.net/imagesloaded/3.0.4/imagesloaded.js'></script>
+
+<script type="text/javascript" src='//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js'></script>
+
+<script type="text/javascript" src='//cdnjs.cloudflare.com/ajax/libs/graphael/0.5.1/g.raphael-min.js'></script>
+
+<script type="text/javascript" src='{{STATIC_URL}}js/g.pie-min.js'></script>
+<script type="text/javascript" src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+<script>
+
+$.endlessPaginate({
+
+    paginateOnScroll: true,
+    onCompleted: function() {
+      console.log($('.masonitem'));
+      var added = $('.hideme');
+      $('.masonitem').removeClass('hideme');
+      var $container = $('#masonjar');
+      $container.masonry('appended', added);
+
+}
+});
+</script>
+
+<script>
+
+$(function(){
+
+
+    $('.gallery-masonry').imagesLoaded( function(){
+          var $container = $('#masonjar');
+          // initialize
+          $container.masonry({
+            columnWidth: 285,
+            itemSelector: '.masonitem'
+          });
+    });
+
+    $('.masonitem').fadeIn(700);
+    $('.masonitem').removeClass('hideme'); //have to remove for later when ajaxed items loaded and appended by selecting hideme
+
+
+    $('.favform').submit(function() { // catch the form's submit event
+        $.ajax({ // create an AJAX call...
+            data: $(this).serialize(), // get the form data
+            type: "POST", // GET or POST
+            url: "/ajaxsave/", // the file to call
+            context: this,  // so we can use this is success--its not auto passed on
+            success: function(response) { // on success..
+                $(this).find('span').toggleClass('makered');
+            }
+        });
+        return false;
+    });
+
+    $('.ansform').submit(function() { // catch the form's submit event
+        // $(this).closest('.masonitem').css('opacity', 0.5);
+        var masonitem = $(this).closest('.masonitem');
+        var piedivid = masonitem.find('.piechartdiv').attr('id');
+        var imgheight = masonitem.find('.mainpic').height();
+        masonitem.find('.loadingmessage').show();
+        masonitem.find('.mainpic').remove();
+        masonitem.find('.answerdiv').remove();
+        // masonitem.find('.itemlink').toggleClass('hideme');
+        // masonitem.find('img').css('opacity', 0);
+        // $(this).closest('.masonitem').find('img').css('-webkit-filter', 'blur(15px)');
+        $.ajax({ // create an AJAX call...
+            data: $(this).serialize(), // get the form data
+            type: "POST", // GET or POST
+            url: "/ajaxanswer/", // the file to call
+            context: this,  // so we can use this is success--its not auto passed on
+            success: function(json) { // on success..
+              $(this).find('span').toggleClass('makered');
+              var obj = jQuery.parseJSON(json);
+              var dicts = jsontodicts(obj);
+              var titles = dicts[1];
+              var counts = dicts[0];
+              masonitem.find('.loadingmessage').hide();
+              pieChartMaker(piedivid,titles,counts, imgheight);
+
+            }
+        });
+        return false;
+    });
+
+
+
+
+
+//Makes the Pie Charts
+function pieChartMaker(id,titles,counts,imgheight){
+
+var r = Raphael($('#'+id).get(0), '100%', imgheight);
+pie = r.piechart(90, imgheight/2, 60, counts,{legend:titles});
+
+ pie.hover(function () {
+                    this.sector.stop();
+                    this.sector.scale(1.1, 1.1, this.cx, this.cy);
+
+                    if (this.label) {
+                        this.label[0].stop();
+                        this.label[0].attr({ r: 7.5 });
+                        this.label[1].attr({ "font-weight": 800 });
+                    }
+                }, function () {
+                    this.sector.animate({ transform: 's1 1 ' + this.cx + ' ' + this.cy }, 500, "bounce");
+
+                    if (this.label) {
+                        this.label[0].animate({ r: 5 }, 500, "bounce");
+                        this.label[1].attr({ "font-weight": 400 });
+                    }
+                });
+
+}
+
+
+//Turns response into data
+function jsontodicts(json_data){
+
+    count=[]
+    titles=[]
+
+    for (var i in json_data) {
+      count.push(json_data[i]);
+      titles.push(i);
+    }
+
+    return [count,titles];  
+}
+
+
+
+
+});  //end of function for page load
+
+</script>
+
+
+{% endblock %}
+
+
+

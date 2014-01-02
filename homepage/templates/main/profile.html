@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<style type="text/css">
+
+	body {
+	  color: rgb(120, 120, 120);
+	}
+
+  form{
+    display: inline-block;
+  }
+
+</style>
+{% endblock %}
+ 
+
+{% block content %} 
+
+
+            <h2>Profile</h2>
+            <hr>
+
+            <form method='post'>{% csrf_token %}{% load crispy_forms_tags %}
+            {% crispy form %}
+            </form>
+
+
+{% endblock %}
+
+
+
+
+
+{% block scripts %}
+
+
+{% endblock %}
+
+
+

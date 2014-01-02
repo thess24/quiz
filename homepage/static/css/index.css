@@ -1,0 +1,95 @@
+	body {
+	  /*color: rgb(120, 120, 120);*/
+    background: url('{{STATIC_URL}}img/bg-tile.jpg');
+	}
+
+  form{
+    display: inline-block;
+  }
+
+  .whiteback{
+    background-color: transparent;
+  }
+
+  .maincolor{
+    color:rgb(79, 159, 207)
+  }
+
+  .catlink{
+    padding-left: 10px;
+    padding-right: 5px;
+    font-size: 12px;
+  }
+
+  .itemlink{
+    font-size: 12px;
+  }
+
+  .itemlink a{
+    color: rgb(255,150,81);
+  }
+
+  .masonitem{
+    border: 1px solid rgb(209,209,209);
+    margin-top: 10px;
+    display: inline-block;
+    width: 270px;
+    background: white;
+    -webkit-border-radius: 5px 5px 5px 5px; 
+    -moz-border-radius: 5px 5px 5px 5px;
+    -o-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+  }
+
+  .questionhead{
+    background-color: rgb(247,247,247);
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px;
+    color: rgb(189,75,0);
+    border-bottom: 1px solid rgb(255,150,81);
+    -webkit-border-top-left-radius: 5px;
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topleft: 5px;
+    -moz-border-radius-topright: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+.questionfoot{
+    /*background-color: rgb(213, 252, 255);*/
+    font-weight: bold;
+    font-size: 18px;
+    padding: 5px;
+  }
+
+.hideme{
+  display: none;
+}
+
+.morelink{
+text-align: center;
+background-color: rgb(219,219,219);
+}
+
+.endless_container{
+  display: none;  
+  /*for endless scrolling so link never appears*/
+}
+
+.defaultitem{
+  width:268px;
+  height:150px;
+  font-size:60px;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.centeritem{
+  margin:  0 auto;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+}
+

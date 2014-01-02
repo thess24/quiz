@@ -1,0 +1,69 @@
+{% load endless %}
+{% paginate questions %}
+ 
+              {% for q in questions%}
+               <div class='masonitem hideme'>
+                  <div class='questionhead'>{{q.question}}</div>
+                  
+                  <div id='item{{forloop.counter}}' class='piechartdiv' style='min-height:150px'>
+                    <div  class='defaultitem loadingmessage' style='display:none'>
+                      <img src='{{STATIC_URL}}img/ajax-loader.gif' class='centeritem'/>
+                    </div>
+                    {% if q.picture %}
+                    <img src="{{MEDIA_URL}}{{q.picture}}" class='mainpic' style='width:100%'>
+                    {% else %}
+                    <div class='defaultitem mainpic centeritem'>?</div>
+                    {% endif %}
+                  </div>
+                    <div class='questionfoot'>
+                      <div class='answerdiv'>
+                        {% if user.is_authenticated %}
+                        {% for a in answers %}{% ifequal q.id a.question.id %}
+                              <form method='post' class='ansform'>{% csrf_token %}
+                                <input type='hidden' value='{{a.id}}' id='id_answer' name='answer'>
+                                  <button type='submit' name='answersubmit' class='btn btn-xs'><span class='glyphicon glyphicon-ok'></span>  {{a.answer}}</button>
+                              </form> 
+                        {% endifequal %}{% endfor %}
+                        {% else %}
+                        <div style='padding-left:10px;font-size:12px'>Log in to Vote</div>
+                        {% endif %}
+                      </div>
+                        <div style='padding-top:5px'>
+                            <span class='catlink'><a href="{% url 'category' q.category %}">({{q.category}})</a></span>
+                            <span class='itemlink'><a href="{% url 'itempage' q.id %}">Discussion</a></span>
+
+                        {% if user.is_authenticated %}
+                            <form method='post' class='pull-right favform'>{% csrf_token %}
+                              <input type='hidden' value='{{q.id}}' id='id_question' name='question'>
+                          {% if q.id in saved %}
+                              <button type='submit' name='removesavequestion'class='btn btn-sm whiteback'>
+                                <span class='glyphicon glyphicon-star makered' ></span>
+                              </button>
+                          {% else %}
+                              <button type='submit'name='addsavequestion'class='btn btn-sm whiteback'>
+                                <span class='glyphicon glyphicon-star'></span>
+                              </button>
+                          {% endif %}
+                            </form>    
+                        {% endif %}
+
+                          {% if q.points > 1000 %}<span class='pull-left'>1000+</span>{% endif %}
+                        </div>
+
+
+                     </div>   <!--end questionfoot-->
+                </div>   <!--end masonitem-->
+
+
+             {% empty %}
+
+              <h3>Nothing to show! Sorry.</h3>
+             {% endfor %}
+<!--                <div class='masonitem hideme morelink' id='textitem'>                  
+                    <div class='questionfoot'> -->
+                    
+                                {% show_more 'continue...' %}
+
+<!--                      </div>   
+                </div>  -->
+
