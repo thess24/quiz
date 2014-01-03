@@ -47,22 +47,22 @@ class Question(models.Model):
 		from django.core.urlresolvers import reverse
 		return reverse('apps.main.views.itempage', args=[str(self.id)])
 
-	def save(self, size=(500, 300)):
-		"""
-		Save Photo after ensuring it is not blank.  Resize as needed.
-		"""
-		if not self.picture and not self.id:
-			return
+	# def save(self, size=(500, 300)):
+	# 	"""
+	# 	Save Photo after ensuring it is not blank.  Resize as needed.
+	# 	"""
+	# 	if not self.picture and not self.id:
+	# 		return
 
-		super(Question, self).save()
-		filename = str(self.picture.url)
-		image = Image.open(self.picture)
-		image.thumbnail(size, Image.ANTIALIAS)
-		# fh = storage.open(self.picture.name, "w")
-		# format = 'jpeg'  # You need to set the correct image format here
-		# image.save(fh, format)
-		# fh.close()
-		image.save(filename)
+	# 	super(Question, self).save()
+	# 	filename = str(self.picture.url)
+	# 	image = Image.open(self.picture)
+	# 	image.thumbnail(size, Image.ANTIALIAS)
+	# 	fh = storage.open(self.picture.name, "w")
+	# 	format = 'jpeg'  # You need to set the correct image format here
+	# 	image.save(fh, format)
+	# 	fh.close()
+		# image.save(filename)
 
 	def __unicode__(self):
 		return self.question
