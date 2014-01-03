@@ -111,8 +111,9 @@ AWS_HEADERS = {
 }
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = 'https://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
-MEDIA_URL = 'https://s3.amazonaws.com/%s/' % AWS_STORAGE_BUCKET_NAME
+S3_URL = 'http://s3.amazonaws.com/%s' % AWS_STORAGE_BUCKET_NAME
+STATIC_URL = S3_URL + STATIC_ROOT
+MEDIA_URL = S3_URL + MEDIA_ROOT
 ########## END STORAGE CONFIGURATION
 
 
