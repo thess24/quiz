@@ -19,8 +19,8 @@ urlpatterns = patterns('',
     url(r'^c/(?P<category>.+)/new/', views.categorynew, name='categorynew'),    
     url(r'^c/(?P<category>.+)/$', views.category, name='category'),    
 
-    (r'^media/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': MEDIA_ROOT}),
+    # (r'^media/(?P<path>.*)$', 'django.views.static.serve',
+    #     {'document_root': MEDIA_ROOT}),
 
 ) 
  
