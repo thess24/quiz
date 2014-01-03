@@ -56,7 +56,7 @@ class Question(models.Model):
 
 		super(Question, self).save()
 		filename = str(self.picture.url)
-		image = Image.open(filename)
+		image = Image.open(self.picture)
 		image.thumbnail(size, Image.ANTIALIAS)
 		# fh = storage.open(self.picture.name, "w")
 		# format = 'jpeg'  # You need to set the correct image format here
