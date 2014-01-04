@@ -83,7 +83,7 @@ def index(request, template = 'main/index.html', extra_context=None):
 
 	answers = Answer.objects.all()
 
-	try: 
+	try:  
 		r = Response.objects.filter(user=request.user.id)
 		responses = [i.answer.question.id for i in r]
 	except: responses=[]

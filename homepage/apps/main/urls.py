@@ -4,7 +4,7 @@ from settings.common import *
  
 
 urlpatterns = patterns('',
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.index, name='home'),
     url(r'^q/(?P<itemid>.+)/$', views.itempage, name='itempage'),
     url(r'^addquestion/', views.addquestion, name='addquestion'),
     url(r'^addanswer/', views.addanswer, name='addanswer'),
@@ -19,8 +19,8 @@ urlpatterns = patterns('',
     url(r'^c/(?P<category>.+)/new/', views.categorynew, name='categorynew'),    
     url(r'^c/(?P<category>.+)/$', views.category, name='category'),    
 
-    (r'^media/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': MEDIA_ROOT}),
+    # (r'^media/(?P<path>.*)$', 'django.views.static.serve',
+    #     {'document_root': MEDIA_ROOT}),
 
 ) 
  
