@@ -53,6 +53,7 @@ body {
 
                   <button class='btn'><span class='glyphicon glyphicon-ok' style='color:green'></span>  {{a.answer}}</button>
         {% endfor %}
+        <div>Everyone has a vote...log in to cast yours</div>
       {% endif %}
       </div>
 </div>
@@ -75,6 +76,7 @@ body {
 <script type="text/javascript" src='//cdnjs.cloudflare.com/ajax/libs/graphael/0.5.1/g.raphael-min.js'></script>
 
 <script type="text/javascript" src='{{STATIC_URL}}js/g.pie-min.js'></script>
+<script type="text/javascript" src='{{STATIC_URL}}js/drum.js'></script>
 
 <script type="text/javascript">
 
@@ -168,7 +170,7 @@ function jsontodicts(json_data){
 pieChartMaker(titles,counts);
 
 
-
+ 
 });</script>
 
 {% endblock %}

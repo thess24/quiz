@@ -27,14 +27,12 @@ urlpatterns = patterns('',
 
 #### High Importance
 
-# fix how new is displayed
-# 2. get comment voting to work
 # work on user experience if not logged in
 # 8. check to make sure signup works
 # 9. better homepage?  hot questions -- top categories -- etc
     # wouldyourather, girls, etc
 # subscribed to categories?
-
+# more stats on page
 
 
 

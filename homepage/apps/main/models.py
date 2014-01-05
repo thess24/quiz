@@ -17,7 +17,7 @@ from django.core.files.storage import default_storage as storage
 class Profile(models.Model):
 	GENDER_CHOICES = (
 		('M', 'Male'),
-		('F', 'Female'),
+		('F', 'Female'), 
 		)
 	user = models.OneToOneField("auth.User")
 	age = models.IntegerField(max_length=2)
@@ -135,17 +135,17 @@ class QuestionForm(ModelForm):
 		    StrictButton('Submit', name='qsubmit', type='submit',css_class='btn-primary'),
 		)
  
-	def clean(self):
-		cleaned_data = super(QuestionForm, self).clean()
-		image= cleaned_data.get('picture',False)
+	# def clean(self):
+	# 	cleaned_data = super(QuestionForm, self).clean()
+	# 	image= cleaned_data.get('picture',False)
 
-		if image:
-			if image._size > 1024*1024:
-				raise ValidationError("Image file too large ( > 1.0mb )")
+	# 	if image:
+	# 		if image._size > 1024*1024:
+	# 			raise ValidationError("Image file too large ( > 1.0mb )")
 
-			pilimage = Image.open(image) 
-			if pilimage.size[0] < 175 or pilimage.size[1] < 100: #image.size is a 2-tuple (width, height)
-				raise ValidationError("Image is too small")
+	# 		pilimage = Image.open(image) 
+	# 		if pilimage.size[0] < 175 or pilimage.size[1] < 100: #image.size is a 2-tuple (width, height)
+	# 			raise ValidationError("Image is too small")
 
 			# pilimage.thumbnail((500,900), Image.ANTIALIAS)
 			# pilimage.save(outfile, "JPEG")
@@ -153,7 +153,7 @@ class QuestionForm(ModelForm):
 		# else:
 		# 	raise ValidationError("Couldn't read uploaded image")
 
-		return cleaned_data
+		# return cleaned_data
 
 
 

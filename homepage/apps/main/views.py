@@ -136,16 +136,16 @@ def addanswer(request):
 			if form.is_valid():
 				instance = form.save(commit=False)
 				instance.user = request.user
-				# ansresponse = str(instance.answer)
+				# addedans = str(instance.answer)
 				instance.save()
 				if Answer.objects.filter(question__id = instance.question.id).count() == 2 :
 					q = Question.objects.get(id=instance.question.id)
 					q.visible = True
 					q.save()
-				return HttpResponseRedirect(reverse('apps.main.views.addanswer', args=()))
+				return HttpResponseRedirect(reverse('apps.main.views.addanswer',))
 
 
-	context = {'form':form}
+	context = {'form':form,}
 	return render(request, 'main/addanswer.html', context)
 
 
@@ -171,7 +171,7 @@ def category(request, category, template = 'main/index.html', extra_context=None
 	savedqform = SavedQForm()
 
 
-	context = {'questions':questions, 'answers':answers, 'form':form, 'responses':responses, 'savedqform':savedqform, 'saved':saved, }
+	context = {'questions':questions, 'answers':answers, 'form':form, 'responses':responses, 'savedqform':savedqform, 'saved':saved, 'newtab':True}
 	
 	if extra_context is not None:
 		context.update(extra_context)

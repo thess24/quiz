@@ -112,6 +112,7 @@
                 <li><a href="{% url 'submitted'%}">Submitted</a></li>
                 <li><a href="{% url 'saved'%}">Saved</a></li>
                 <li><a href="{% url 'scoreboard'%}">Scores</a></li>
+                <li><a href="{% url 'deletequestion'%}">Delete A Question</a></li>
                 <li class="divider"></li>
                 <li class="dropdown-header">Account</li>
                 <li><a href="/accounts/password/change">Change Password</a></li>
@@ -132,9 +133,9 @@
       </div>
     </div>
           <div class='row lownav'>
-            
-            <!-- <a href="new">/New</a> -->
-
+            {% if newtab %}
+            <a href="new">/New</a>
+            {% endif %}
           </div>
 
       <div class="container">
