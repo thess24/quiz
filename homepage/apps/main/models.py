@@ -135,13 +135,13 @@ class QuestionForm(ModelForm):
 		    StrictButton('Submit', name='qsubmit', type='submit',css_class='btn-primary'),
 		)
  
-	# def clean(self):
-	# 	cleaned_data = super(QuestionForm, self).clean()
-	# 	image= cleaned_data.get('picture',False)
+	def clean(self):
+		cleaned_data = super(QuestionForm, self).clean()
+		image= cleaned_data.get('picture',False)
 
-	# 	if image:
-	# 		if image._size > 1024*1024:
-	# 			raise ValidationError("Image file too large ( > 1.0mb )")
+		if image:
+			if image._size > 2*1024*1024:
+				raise ValidationError("Image file too large ( > 2.0mb )")
 
 	# 		pilimage = Image.open(image) 
 	# 		if pilimage.size[0] < 175 or pilimage.size[1] < 100: #image.size is a 2-tuple (width, height)
@@ -153,7 +153,7 @@ class QuestionForm(ModelForm):
 		# else:
 		# 	raise ValidationError("Couldn't read uploaded image")
 
-		# return cleaned_data
+		return cleaned_data
 
 
 

@@ -106,11 +106,8 @@ def index(request, template = 'main/index.html', extra_context=None):
 
 
 def addquestion(request):
-	try:
-		questions = Question.objects.filter(user=request.user).order_by('-time')
-
-	except: 
-		questions = []
+	try: questions = Question.objects.filter(user=request.user).order_by('-time')
+	except: questions = []
 
 	form = QuestionForm()
 

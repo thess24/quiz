@@ -33,7 +33,8 @@ urlpatterns = patterns('',
     # wouldyourather, girls, etc
 # subscribed to categories?
 # more stats on page
-
+# check file size
+# resize image
 
 
 #  ajax answer submit
