@@ -136,6 +136,18 @@
             {% if newtab %}
             <a href="new">/New</a>
             {% endif %}
+
+            {% if category %}
+            <form method='post' id='groupform' class='pull-right'>{% csrf_token %}
+              <input type='hidden' value='{{category}}' name='groupname'>
+              {% if category|lower in groups %}
+              <button type='submit' class='btn btn-xs btn-primary'>{{category}}</button>
+                {% else %}
+              <button type='submit' class='btn btn-xs'>{{category}}</button>
+              {% endif %}
+            </form>
+            {% endif %}
+
           </div>
 
       <div class="container">
@@ -151,6 +163,22 @@
 <script type="text/javascript" src='//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js'></script>
 <script type="text/javascript" src='//cdnjs.cloudflare.com/ajax/libs/masonry/3.1.1/masonry.pkgd.min.js'></script>
 
+<script type="text/javascript">
+
+    $('#groupform').submit(function() { // catch the form's submit event
+        $.ajax({ // create an AJAX call...
+            data: $(this).serialize(), // get the form data
+            type: "POST", // GET or POST
+            url: "/ajaxgroupsub/", // the file to call
+            context: this,  // so we can use this is success--its not auto passed on
+            success: function(response) { // on success..
+                $(this).find('button').toggleClass('btn-primary');
+            }
+        });
+        return false;
+    });
+
+</script>
 {% block scripts %}{% endblock %}
   </body>
 </html>

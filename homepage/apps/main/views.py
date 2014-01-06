@@ -11,6 +11,7 @@ from apps.main.utils import order_by_score
 from django.utils import simplejson
 from endless_pagination.decorators import page_template
 from django.db.models.base import ObjectDoesNotExist
+from django.contrib.auth.models import Group
 
 # r = Response.objects.values('answer__answer').annotate(ac=Count('user'))
    # outputs the number of responses for each answer (by id) of each question
@@ -42,17 +43,18 @@ def itempage(request, itemid):
 
 
 def ajaxsave(request):
-	if request.method == "POST" and request.is_ajax(): 
-		savedqform = SavedQForm(request.POST)
-		if savedqform.is_valid():
-			instance = savedqform.save(commit=False)
-			try: 
-				SavedQuestion.objects.get(user=request.user.id, question=instance.question).delete()
-			except: 
-				instance.user = request.user
-				instance.save()
+	if request.method == "POST" and request.is_ajax():
+		if request.user.is_authenticated():
+			savedqform = SavedQForm(request.POST)
+			if savedqform.is_valid():
+				instance = savedqform.save(commit=False)
+				try: 
+					SavedQuestion.objects.get(user=request.user.id, question=instance.question).delete()
+				except: 
+					instance.user = request.user
+					instance.save()
 
-		return HttpResponse('worked!')
+			return HttpResponse('worked!')
 
 def ajaxanswer(request):
 	if request.method == "POST" and request.is_ajax(): 
@@ -75,6 +77,22 @@ def ajaxanswer(request):
 				return HttpResponse(simplejson.dumps(response_dict))
 
 		return HttpResponse('didnt work!')
+
+def ajaxgroupsub(request):
+	if request.method == "POST" and request.is_ajax():
+		if request.user.is_authenticated():
+			adduser = request.user
+			groupname = request.POST['groupname']
+			g = Group.objects.get(name=groupname.lower())
+			usergroups = request.user.groups.values_list('name',flat=True)
+			if g.name in usergroups:
+				g.user_set.remove(adduser)
+			else:
+				g.user_set.add(adduser)
+			return HttpResponse('worked!')
+
+	return HttpResponse('worked!')
+
 
 @page_template('main/paginate.html')   #part of endless scroll to add pagetemplate to context and help with ajax
 def index(request, template = 'main/index.html', extra_context=None):
@@ -111,16 +129,26 @@ def addquestion(request):
 
 	form = QuestionForm()
 
+	if request.user.is_authenticated(): groups = request.user.groups.values_list('name',flat=True)
+	else: groups = []
+
 	if request.method=='POST':
 		if 'qsubmit' in request.POST:
 			form = QuestionForm(request.POST, request.FILES)
 			if form.is_valid():
 				instance = form.save(commit=False)
 				instance.user = request.user
+				category = instance.category
 				instance.save()
+
+				g, created = Group.objects.get_or_create(name=category.lower())
+				if created:
+					adduser = request.user
+					g.user_set.add(adduser)
+
 				return HttpResponseRedirect(reverse('apps.main.views.addanswer', args=()))	
 
-	context = {'form':form, 'questions':questions}
+	context = {'form':form, 'questions':questions, 'groups':groups}
 	return render(request, 'main/addquestion.html', context)
 
 def addanswer(request):
@@ -167,8 +195,10 @@ def category(request, category, template = 'main/index.html', extra_context=None
 	form = ResponseForm()
 	savedqform = SavedQForm()
 
+	if request.user.is_authenticated(): groups = request.user.groups.values_list('name',flat=True)
+	else: groups = []
 
-	context = {'questions':questions, 'answers':answers, 'form':form, 'responses':responses, 'savedqform':savedqform, 'saved':saved, 'newtab':True}
+	context = {'questions':questions,'groups':groups, 'answers':answers, 'form':form, 'responses':responses, 'savedqform':savedqform, 'saved':saved, 'newtab':True, 'category':category}
 	
 	if extra_context is not None:
 		context.update(extra_context)
@@ -307,3 +337,5 @@ def newprofile(request):
 				return HttpResponseRedirect(reverse('apps.main.views.addquestion', args=()))
 	context = {'form':form}
 	return render(request, 'main/profile.html', context)
+
+

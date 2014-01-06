@@ -140,7 +140,7 @@ class QuestionForm(ModelForm):
 		image= cleaned_data.get('picture',False)
 
 		if image:
-			if image._size > 2*1024*1024:
+			if image._size > 5*1024*1024:
 				raise ValidationError("Image file too large ( > 2.0mb )")
 
 	# 		pilimage = Image.open(image) 
