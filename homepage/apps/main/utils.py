@@ -14,7 +14,7 @@ def order_by_score(queryset, score_fields, date_field, reverse=True):
     memory, which will suffice for development.
     """
 
-    scale = getattr(settings, "SCORE_SCALE_FACTOR", 2)
+    scale = getattr(settings, "SCORE_SCALE_FACTOR", 4)
  
     # Timestamp SQL function snippets mapped to DB backends.
     # Defining these assumes the SQL functions POW() and NOW()

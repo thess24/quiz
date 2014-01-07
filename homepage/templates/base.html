@@ -60,7 +60,7 @@
     }
 
     .lownav{
-      background-color: rgb(242, 242, 242);
+      background-color: rgb(250, 250, 250);
       -webkit-border-radius: 5px;
       -webkit-border-radius: 5px;
       -moz-border-radius: 5px;
@@ -102,6 +102,9 @@
         <div class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li><a href="{% url 'addquestion'%}">Ask Question</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'userpage'%}">User</a></li>
+            {% endif %}
           </ul>
           {% if user.is_authenticated %}
           <ul class="nav navbar-nav pull-right">
@@ -133,13 +136,24 @@
       </div>
     </div>
           <div class='row lownav'>
-            {% if newtab %}
-            <a href="new">/New</a>
-            {% endif %}
-
             {% if category %}
+            <a href="{% url 'categorynew' category %}" class='btn btn-xs btn-warning'>/New</a>
+            <a href="{% url 'categorytop' category %}" class='btn btn-xs btn-warning'>/Top</a>
+
+                {% if timefilter %}
+                  <form method='get' >
+                    <input type='hidden' value='week' name='time'>
+                    <button type='submit' class='btn btn-xs'>Week</button>
+                  </form>
+                   <form method='get' >
+                    <input type='hidden' value='month' name='time'>
+                    <button type='submit' class='btn btn-xs'>Month</button>
+                  </form>
+                {% endif %}
+
             <form method='post' id='groupform' class='pull-right'>{% csrf_token %}
               <input type='hidden' value='{{category}}' name='groupname'>
+              subscribe >>
               {% if category|lower in groups %}
               <button type='submit' class='btn btn-xs btn-primary'>{{category}}</button>
                 {% else %}

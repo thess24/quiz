@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+
+
+{% block head %}
+<style type="text/css">
+
+	body {
+	  color: rgb(120, 120, 120);
+	}
+
+  form{
+    display: inline-block;
+  }
+
+  .maincolor{
+    color:rgb(79, 159, 207)
+  }
+
+ .itemlink{
+   color:#CF6D00 !important;
+   font-weight:bold;
+ }
+
+</style>
+{% endblock %}
+ 
+
+{% block content %} 
+
+
+{% if user.is_authenticated %}
+        <div class='row' style='margin-top:20px'>
+          <div class='row' style='padding:25px'>
+            <div class='pull-right'>
+            <button class='btn'><a href="{% url 'deletequestion' %}">Delete Questions</a></button>
+            <button class='btn'><a href="{% url 'profile' %}">Profile</a></button>
+            <button class='btn'><a href="{% url 'saved' %}">Saved</a></button>
+            <button class='btn'><a href="{% url 'submitted' %}">Submitted</a></button>
+            </div>
+          </div>
+            <div class='col-md-7'>
+              <h4>You have {{userscore}} points</h4>
+              {% for q in questions %}
+              <h4>
+                <a href="{% url 'itempage' q.id %}" class='itemlink'>{{q.points}} - {{q.question}} </a>
+                  <small>({{q.time}})</small>  
+              </h4>
+              {% endfor %}
+            </div>
+
+            <div class='col-md-5'>
+              <table class='table'>
+                <tr><th>Groups</th></tr>
+              {% for g in groups %}
+                <tr><td><a href="{% url 'category' g.title %}">{{g.title}}</a></td></tr>
+                {% empty %}
+                <tr>None</tr>
+              {% endfor %}
+              </table>
+            </div>
+
+        </div>
+
+{% else %}
+
+        <div class='row'>
+          <div class='col-md-12'>
+
+            <h4>You can't view your user page because you're not singed in</h4>
+
+<hr>
+  
+          <button class='btn btn-lg'><a href="/accounts/signup">Sign Up</a></button>
+
+          </div>
+        </div>
+
+{% endif %}
+
+
+
+{% endblock %}
+
+
+
+{% block scripts %}
+<script type="text/javascript">
+
+$(function(){
+  $('#id_category').popover({'trigger':'focus', 'title': 'Where does it fit?','content':'The question will appear in /c/<category> so choose wisely!',  'placement':'right'});
+  $('#id_description').popover({'trigger':'focus', 'title': 'Description','content':'This is what will show up on the questions page', 'placement':'right'});
+});
+
+</script>
+{% endblock %}
+
+
+

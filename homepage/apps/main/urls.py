@@ -8,6 +8,7 @@ urlpatterns = patterns('',
     url(r'^q/(?P<itemid>.+)/$', views.itempage, name='itempage'),
     url(r'^addquestion/', views.addquestion, name='addquestion'),
     url(r'^addanswer/', views.addanswer, name='addanswer'),
+    url(r'^userpage/', views.userpage, name='userpage'),
     url(r'^scoreboard/', views.scoreboard, name='scoreboard'),
     url(r'^ajaxsave/', views.ajaxsave, name='ajaxsave'),
     url(r'^ajaxanswer/', views.ajaxanswer, name='ajaxanswer'),
@@ -18,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^newprofile/', views.newprofile, name='newprofile'),
     url(r'^deletequestion/', views.deletequestion, name='deletequestion'),
     url(r'^c/(?P<category>.+)/new/', views.categorynew, name='categorynew'),    
+    url(r'^c/(?P<category>.+)/top/', views.categorytop, name='categorytop'),    
     url(r'^c/(?P<category>.+)/$', views.category, name='category'),    
 
     # (r'^media/(?P<path>.*)$', 'django.views.static.serve',
@@ -32,10 +34,9 @@ urlpatterns = patterns('',
 # 8. check to make sure signup works
 # 9. better homepage?  hot questions -- top categories -- etc
     # wouldyourather, girls, etc
-# subscribed to categories?
-# more stats on page
-# check file size
+# more stats on page -- boy/girl
 # resize image
+# something to see if you answered the question
 
 
 #  ajax answer submit
@@ -45,7 +46,7 @@ urlpatterns = patterns('',
 #  Other stuff
     # get google analytics
     # favicon
-
+    # web url
 
 
 

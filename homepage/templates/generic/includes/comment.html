@@ -1,7 +1,7 @@
-{% load i18n mezzanine_tags comment_tags rating_tags future %}
+{% load i18n mezzanine_tags comment_tags rating_tags customtags future %}
 
 <ul class="unstyled comment-thread">
-    {% for comment in comments_for_thread %}
+    {% for comment in comments_for_thread|sort_by_reverse:"rating_sum" %}
     <li id="comment-{{ comment.id }}">
     {% if not comment.is_removed and comment.is_public %}
 

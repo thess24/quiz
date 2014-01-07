@@ -6,13 +6,12 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field
 from crispy_forms.bootstrap import StrictButton
 from django.core.exceptions import ValidationError
-import StringIO
 from PIL import Image
 from django.utils import timezone
 import datetime
 from mezzanine.generic.fields import RatingField, CommentsField
 from mezzanine.core.models import Displayable, Ownable
-from django.core.files.storage import default_storage as storage
+# from django.core.files.storage import default_storage as storage
 
 class Profile(models.Model):
 	GENDER_CHOICES = (
@@ -141,7 +140,7 @@ class QuestionForm(ModelForm):
 
 		if image:
 			if image._size > 5*1024*1024:
-				raise ValidationError("Image file too large ( > 2.0mb )")
+				raise ValidationError("Image file too large ( > 5.0mb )")
 
 	# 		pilimage = Image.open(image) 
 	# 		if pilimage.size[0] < 175 or pilimage.size[1] < 100: #image.size is a 2-tuple (width, height)

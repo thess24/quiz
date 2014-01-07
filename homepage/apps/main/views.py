@@ -2,6 +2,7 @@
 from django.shortcuts import render, get_object_or_404
 from apps.main.models import Question, Answer, Response, Profile, SavedQuestion
 from apps.main.models import ResponseForm, QuestionForm, AnswerForm, SavedQForm, ProfileForm
+from django.utils import timezone
 import datetime
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.contrib.auth.decorators import login_required
@@ -26,7 +27,9 @@ def deletequestion(request):
 	if request.method=='POST':
 		if 'qdelete' in request.POST:
 			itemid = request.POST['id']
-			Question.objects.get(id=itemid).delete()  ##just make hidden instead
+			q = Question.objects.get(id=itemid)
+			q.visible = False
+			q.save()  
 			return HttpResponseRedirect(reverse('apps.main.views.deletequestion', args=()))
 
 	context = {'questions':questions}
@@ -129,9 +132,6 @@ def addquestion(request):
 
 	form = QuestionForm()
 
-	if request.user.is_authenticated(): groups = request.user.groups.values_list('name',flat=True)
-	else: groups = []
-
 	if request.method=='POST':
 		if 'qsubmit' in request.POST:
 			form = QuestionForm(request.POST, request.FILES)
@@ -148,12 +148,27 @@ def addquestion(request):
 
 				return HttpResponseRedirect(reverse('apps.main.views.addanswer', args=()))	
 
-	context = {'form':form, 'questions':questions, 'groups':groups}
+	context = {'form':form, 'questions':questions,}
 	return render(request, 'main/addquestion.html', context)
 
+
+def userpage(request):
+	if request.user.is_authenticated(): 
+		groups = request.user.groups.values_list('name',flat=True)
+		questions = Question.objects.filter(user=request.user).order_by('-time')
+	else: 
+		groups = []
+		questions = []
+
+	context = {'questions':questions, 'groups':sorted(groups)}
+	return render(request, 'main/userpage.html', context)
+
 def addanswer(request):
-	user=request.user
+	user = request.user
+	tenmin = timezone.now() - datetime.timedelta(minutes=10)
 	form = AnswerForm(user)
+	questions = Question.objects.filter(user=user, time__gte=tenmin)
+	# answers = Answer.objects.filter(user=user)
 
 	if request.method=='POST':
 		if 'qsubmit' in request.POST:
@@ -169,8 +184,7 @@ def addanswer(request):
 					q.save()
 				return HttpResponseRedirect(reverse('apps.main.views.addanswer',))
 
-
-	context = {'form':form,}
+	context = {'form':form,'questions':questions}
 	return render(request, 'main/addanswer.html', context)
 
 
@@ -198,7 +212,7 @@ def category(request, category, template = 'main/index.html', extra_context=None
 	if request.user.is_authenticated(): groups = request.user.groups.values_list('name',flat=True)
 	else: groups = []
 
-	context = {'questions':questions,'groups':groups, 'answers':answers, 'form':form, 'responses':responses, 'savedqform':savedqform, 'saved':saved, 'newtab':True, 'category':category}
+	context = {'questions':questions,'groups':groups, 'answers':answers, 'form':form, 'responses':responses, 'savedqform':savedqform, 'saved':saved, 'category':category}
 	
 	if extra_context is not None:
 		context.update(extra_context)
@@ -227,13 +241,52 @@ def categorynew(request, category, template = 'main/index.html', extra_context=N
 	savedqform = SavedQForm()
 
 
-	context = {'questions':questions, 'answers':answers, 'form':form, 'responses':responses, 'savedqform':savedqform, 'saved':saved, }
+	context = {'questions':questions, 'answers':answers, 'form':form, 'responses':responses, 'savedqform':savedqform, 'saved':saved, 'category':category}
 	
 	if extra_context is not None:
 		context.update(extra_context)
 
 	return render(request, template, context)
 
+@page_template('main/paginate.html')   #part of endless scroll to add pagetemplate to context and help with ajax
+def categorytop(request, category, template = 'main/index.html', extra_context=None):
+	questions = Question.objects.filter(category__iexact=category.lower(), visible=True).order_by('-points')
+	if not questions: raise Http404
+
+	answers = Answer.objects.filter(question__category__iexact=category.lower())
+
+	try: 
+		r = Response.objects.filter(user=request.user.id)
+		responses = [i.answer.question.id for i in r]
+	except: responses=[]
+
+	try: 
+		s = SavedQuestion.objects.filter(user=request.user.id)
+		saved = [i.question.id for i in s]
+	except: saved=[]
+
+	form = ResponseForm()
+	savedqform = SavedQForm()
+
+	if request.method=='GET':
+		if request.GET.get('time'):
+			time = request.GET.get('time')
+			if time == 'week':
+				timeconstraint = timezone.now() - datetime.timedelta(days=7)
+			elif time == 'month':
+				timeconstraint = timezone.now() - datetime.timedelta(days=30)
+			else:
+				timeconstraint = timezone.now() - datetime.timedelta(days=1)
+
+			questions = Question.objects.filter(category__iexact=category.lower(), visible=True, time__gte=timeconstraint).order_by('-points')
+
+
+	context = {'questions':questions, 'answers':answers, 'form':form, 'responses':responses, 'savedqform':savedqform, 'saved':saved, 'category':category, 'timefilter':True}
+	
+	if extra_context is not None:
+		context.update(extra_context)
+
+	return render(request, template, context)
 
 @page_template('main/paginate.html')   #part of endless scroll to add pagetemplate to context and help with ajax
 def saved(request, template = 'main/index.html', extra_context=None):

@@ -9,11 +9,15 @@
 	}
 
   form{
-    display: inline-block;
+    max-width: 400px;
   }
 
   .maincolor{
     color:rgb(79, 159, 207)
+  }
+
+  #questionlist{
+    font-size: 18px;
   }
 
 </style>
@@ -23,7 +27,7 @@
 {% block content %} 
 
         <div class='row'>
-          <div class='col-md-12'>
+          <div class='col-md-6'>
 
 <h2>Add an Answer</h2>
             <hr>
@@ -45,11 +49,21 @@
             </form>
 
           </div>
+          <div class='col-md-6'>
+            <h4 class='page-header'>Recent Questions</h4>
+            <ul id='questionlist'>
+            {% for q in questions %}
+              <li><b>{{q.question}}</b></li>
+                <ul style='list-style-type:none'>
+                {% for a in q.answer_set.all %}
+                    <li><button class='btn btn-xs'>{{a.answer}}</button></li>
+                {% endfor %}
+                </ul>
+            {% endfor %}
+            </ul>
+          </div>
         </div>
 
-<div id='id1'></div>
-<div id='id2' style='background-color:green'></div>
-<div></div>
 {% endblock %}
 
 

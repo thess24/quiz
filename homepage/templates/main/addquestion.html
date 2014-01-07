@@ -79,14 +79,6 @@
 
 {% endif %}
 
-
-{% for g in groups %}
-  <div><a href="{% url 'category' g.title %}">{{g.title}}</a></div>
-  {% empty %}
-  <div>subscribe to some groups and they get saved here</div>
-{% endfor %}
-
-
 {% endblock %}
 
 
