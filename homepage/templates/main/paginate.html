@@ -7,7 +7,7 @@
                   
                   <div id='item{{forloop.counter}}' class='piechartdiv' style='min-height:150px'>
                     <div  class='defaultitem loadingmessage' style='display:none'>
-                      <img src='{{STATIC_URL}}img/ajax-loader.gif' class='centeritem'/>
+                      <img src='{{STATIC_URL}}img/ajax-loader.gif' class='centeritem' width='32' height='32'/>
                     </div>
                     {% if q.picture %}
                     <img src="{{MEDIA_URL}}{{q.picture}}" class='mainpic' style='width:100%'>
@@ -54,16 +54,9 @@
                      </div>   <!--end questionfoot-->
                 </div>   <!--end masonitem-->
 
-
              {% empty %}
-
               <h3>Nothing to show! Sorry.</h3>
              {% endfor %}
-<!--                <div class='masonitem hideme morelink' id='textitem'>                  
-                    <div class='questionfoot'> -->
-                    
-                                {% show_more 'continue...' %}
-
-<!--                      </div>   
-                </div>  -->
+                   
+                          {% show_more 'continue...' %}
 
