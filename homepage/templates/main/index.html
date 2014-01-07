@@ -30,6 +30,9 @@
 <script type="text/javascript" src='//cdn.jsdelivr.net/imagesloaded/3.0.4/imagesloaded.js'></script>
 <script type="text/javascript" src='//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js'></script>
 <script type="text/javascript" src='//cdnjs.cloudflare.com/ajax/libs/graphael/0.5.1/g.raphael-min.js'></script>
+
+{% load compress %}
+{% compress js %}
 <script type="text/javascript" src='{{STATIC_URL}}js/g.pie-min.js'></script>
 <script type="text/javascript" src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
 <script>
@@ -160,7 +163,7 @@ function jsontodicts(json_data){
 });  //end of function for page load
 
 </script>
-
+{% endcompress %}
 
 {% endblock %}
 
